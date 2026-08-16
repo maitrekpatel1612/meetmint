@@ -11,7 +11,7 @@ busyRouter.post(
   validate(busyBlockSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const participant = await participantService.addBusyBlock(req.params.id, req.body);
+      const participant = await participantService.addBusyBlock(req.params.id as string, req.body);
       res.status(201).json({ success: true, data: participant });
     } catch (err) { next(err); }
   }
@@ -21,8 +21,8 @@ busyRouter.post(
 busyRouter.delete('/:blockId', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const participant = await participantService.removeBusyBlock(
-      req.params.id,
-      req.params.blockId
+      req.params.id as string,
+      req.params.blockId as string
     );
     res.json({ success: true, data: participant });
   } catch (err) { next(err); }

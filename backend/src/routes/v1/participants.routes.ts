@@ -19,7 +19,7 @@ participantRouter.get('/', async (_req: Request, res: Response, next: NextFuncti
 // GET /api/v1/participants/:id
 participantRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const participant = await participantService.getById(req.params.id);
+    const participant = await participantService.getById(req.params.id as string);
     res.json({ success: true, data: participant });
   } catch (err) { next(err); }
 });
@@ -42,7 +42,7 @@ participantRouter.put(
   validate(updateParticipantSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const participant = await participantService.update(req.params.id, req.body);
+      const participant = await participantService.update(req.params.id as string, req.body);
       res.json({ success: true, data: participant });
     } catch (err) { next(err); }
   }
@@ -51,7 +51,7 @@ participantRouter.put(
 // DELETE /api/v1/participants/:id
 participantRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await participantService.delete(req.params.id);
+    await participantService.delete(req.params.id as string);
     res.json({ success: true, message: 'Participant removed' });
   } catch (err) { next(err); }
 });

@@ -11,8 +11,9 @@ export function validate<T>(schema: ZodSchema<T>) {
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
-      const errors = result.error.errors.map(e => ({
-        field:   e.path.join('.'),
+      const issues = (result.error as any).issues || (result.error as any).errors || [];
+      const errors = issues.map((e: any) => ({
+        field:   Array.isArray(e.path) ? e.path.join('.') : String(e.path ?? ''),
         message: e.message,
       }));
 

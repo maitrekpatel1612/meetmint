@@ -5,7 +5,7 @@ const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 export const slotRequestSchema = z.object({
   durationMinutes: z
-    .number({ required_error: 'durationMinutes is required' })
+    .number({ message: 'durationMinutes must be a number' })
     .int()
     .min(15, 'Minimum duration is 15 minutes')
     .max(480, 'Maximum duration is 480 minutes (8 hours)'),

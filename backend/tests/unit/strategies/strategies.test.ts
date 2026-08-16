@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { AttendanceStrategy } from '../../../src/solver/strategies/AttendanceStrategy';
 import { ConvenienceStrategy } from '../../../src/solver/strategies/ConvenienceStrategy';
 import { FairnessStrategy }    from '../../../src/solver/strategies/FairnessStrategy';

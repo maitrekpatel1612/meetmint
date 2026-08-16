@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { solve } from '../../src/solver/solver';
 import type { ParticipantInput } from '../../src/solver/solver';
 

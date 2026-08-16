@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Participant } from './models/participant.model';
 
 // ── Sample team from the brief ─────────────────────────────────────────────
@@ -33,12 +34,21 @@ const SEED_PARTICIPANTS = [
  * Safe to call on every startup — only runs if no participants exist.
  */
 export async function seedDefaultParticipants(): Promise<void> {
-  const count = await Participant.countDocuments();
-  if (count > 0) {
-    console.log(`[seed] DB already has ${count} participant(s) — skipping seed`);
+  if (mongoose.connection.readyState !== 1) {
+    console.warn('⚠️  [seed skipped] MongoDB is not connected.');
     return;
   }
 
-  await Participant.insertMany(SEED_PARTICIPANTS);
-  console.log(`[seed] Seeded ${SEED_PARTICIPANTS.length} default participants: Maya, Tom, Sara, Jack`);
+  try {
+    const count = await Participant.countDocuments();
+    if (count > 0) {
+      console.log(`ℹ️  [seed] Database already contains ${count} participant(s) — skipping initial seed.`);
+      return;
+    }
+
+    await Participant.insertMany(SEED_PARTICIPANTS);
+    console.log(`🌱 [seed] Successfully seeded default participants (Maya, Tom, Sara, Jack) into MongoDB Atlas!`);
+  } catch (err: any) {
+    console.error(`❌ [seed error] Could not seed participants: ${err?.message || err}`);
+  }
 }

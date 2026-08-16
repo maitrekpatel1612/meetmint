@@ -4,16 +4,16 @@ import type { ParticipantInput } from '../../src/solver/solver';
 
 // ── Sample team from the brief ─────────────────────────────────────────────
 const PARTICIPANTS: ParticipantInput[] = [
-  { name: 'Maya', timezone: 'Asia/Kolkata',        availableStart: '09:00', availableEnd: '18:00', busyBlocks: [] },
-  { name: 'Tom',  timezone: 'Europe/London',       availableStart: '08:00', availableEnd: '17:00', busyBlocks: [] },
+  { name: 'Maya', timezone: 'Asia/Kolkata', availableStart: '09:00', availableEnd: '18:00', busyBlocks: [] },
+  { name: 'Tom', timezone: 'Europe/London', availableStart: '08:00', availableEnd: '17:00', busyBlocks: [] },
   { name: 'Sara', timezone: 'America/Los_Angeles', availableStart: '06:00', availableEnd: '15:00', busyBlocks: [] },
-  { name: 'Jack', timezone: 'Australia/Sydney',    availableStart: '10:00', availableEnd: '19:00', busyBlocks: [] },
+  { name: 'Jack', timezone: 'Australia/Sydney', availableStart: '10:00', availableEnd: '19:00', busyBlocks: [] },
 ];
 
 const BASE_OPTIONS = {
   durationMinutes: 45,
-  dateRangeStart:  '2026-03-09',
-  dateRangeEnd:    '2026-03-09',
+  dateRangeStart: '2026-03-09',
+  dateRangeEnd: '2026-03-09',
   granularityMinutes: 15,
 };
 
@@ -71,11 +71,11 @@ describe('solve() — core algorithm', () => {
 
     // No candidate that starts in UTC 02:30–03:30 should have Maya available
     const busyWindowStartMs = new Date('2026-03-09T02:30:00Z').getTime();
-    const busyWindowEndMs   = new Date('2026-03-09T03:30:00Z').getTime();
+    const busyWindowEndMs = new Date('2026-03-09T03:30:00Z').getTime();
 
     candidates.forEach(c => {
       const slotStartMs = new Date(c.startUtc).getTime();
-      const slotEndMs   = new Date(c.endUtc).getTime();
+      const slotEndMs = new Date(c.endUtc).getTime();
       const overlaps = slotStartMs < busyWindowEndMs && slotEndMs > busyWindowStartMs;
       if (overlaps) {
         const mayaTime = c.localTimes.find(lt => lt.name === 'Maya');

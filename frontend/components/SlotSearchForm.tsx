@@ -13,7 +13,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Search, RotateCcw } from "lucide-react";
-import { StrategyName } from "@/lib/types";
+import { SlotSearchResult, StrategyName } from "@/lib/types";
 
 const STRATEGIES: {
     value: StrategyName;
@@ -39,7 +39,7 @@ const STRATEGIES: {
 ];
 
 interface SlotSearchFormProps {
-    onResults: (data: ReturnType<typeof useSlots>["data"]) => void;
+    onResults: (data?: SlotSearchResult) => void;
 }
 
 export function SlotSearchForm({ onResults }: SlotSearchFormProps) {
@@ -48,7 +48,9 @@ export function SlotSearchForm({ onResults }: SlotSearchFormProps) {
     const { mutate: findSlots, isPending } = useSlots();
 
     function handleSearch() {
-        findSlots(searchParams, { onSuccess: onResults });
+        findSlots(searchParams, {
+            onSuccess: (data) => onResults(data),
+        });
     }
 
     return (
@@ -130,7 +132,7 @@ export function SlotSearchForm({ onResults }: SlotSearchFormProps) {
                     >
                         <SelectTrigger
                             id="granularity"
-                            className="h-11 w-full rounded-xl border border-white/10 bg-[#2a2c31] px-3 text-base text-white shadow-inner shadow-black/10 data-[placeholder]:text-white/70"
+                            className="h-11 w-full rounded-xl border border-white/10 bg-[#2a2c31] px-3 text-base text-white shadow-inner shadow-black/10 data-placeholder:text-white/70"
                         >
                             <SelectValue />
                         </SelectTrigger>
@@ -158,7 +160,7 @@ export function SlotSearchForm({ onResults }: SlotSearchFormProps) {
                 >
                     <SelectTrigger
                         id="strategy"
-                        className="h-11 w-full rounded-xl border border-white/10 bg-[#2a2c31] px-3 text-base text-white shadow-inner shadow-black/10 data-[placeholder]:text-white/70"
+                        className="h-11 w-full rounded-xl border border-white/10 bg-[#2a2c31] px-3 text-base text-white shadow-inner shadow-black/10 data-placeholder:text-white/70"
                     >
                         <SelectValue />
                     </SelectTrigger>

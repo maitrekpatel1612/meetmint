@@ -5,12 +5,25 @@ import { v1Router } from './routes/v1';
 
 export function createApp(): Application {
   const app = express();
+  const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:3000')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 
   // ── Core middleware ────────────────────────────────────────────────────────
   app.use(cors({
-    origin: (process.env.CORS_ORIGIN ?? 'http://localhost:3000').split(','),
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error('Not allowed by CORS'));
+    },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 204,
   }));
   app.use(express.json());
 
